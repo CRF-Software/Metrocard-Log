@@ -1,0 +1,20 @@
+{
+  "metrocard": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-metrocardlog-metrocard-2feb0-authRole",
+      "UnauthRoleArn": "arn:aws:iam::891376941754:role/amplify-metrocardlog-metrocard-2feb0-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::891376941754:role/amplify-metrocardlog-metrocard-2feb0-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-metrocardlog-metrocard-2feb0-deployment",
+      "UnauthRoleName": "amplify-metrocardlog-metrocard-2feb0-unauthRole",
+      "StackName": "amplify-metrocardlog-metrocard-2feb0",
+      "StackId": "arn:aws:cloudformation:us-east-1:891376941754:stack/amplify-metrocardlog-metrocard-2feb0/fefc0d70-f2f7-11ef-ae5b-0affd585f94d",
+      "AmplifyAppId": "d32zithsoisljx"
+    },
+    "categories": {
+      "api": {
+        "metrocardlog": {}
+      }
+    }
+  }
+}
