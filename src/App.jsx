@@ -34,13 +34,10 @@ const MetroCardTracker = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Prepare the data to send.
-    // Include the transactionType, and only send the appropriate date field.
-    const inputData = {
-      ...formData,
-      transactionType,
-    };
+    // Prepare the data to send without including transactionType
+    const inputData = { ...formData };
 
+    // Remove the irrelevant date field based on transactionType
     if (transactionType === 'issue') {
       delete inputData.dateReturned;
     } else {
@@ -54,6 +51,7 @@ const MetroCardTracker = () => {
       });
       console.log("GraphQL response:", response);
       alert("Data saved to DynamoDB!");
+
       // Reset form state after submission
       setFormData({
         unit: "",
