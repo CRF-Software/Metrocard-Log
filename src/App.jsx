@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "./components/ui/card";
-import { API } from "aws-amplify";
+import { generateClient } from "aws-amplify/api";
+const client = generateClient();
 import { createMetroCard } from "./graphql/mutations";
 
 const MetroCardTracker = () => {
@@ -40,11 +41,11 @@ const MetroCardTracker = () => {
       delete inputData.dateIssued;
     }
 
-    try {
-      await API.graphql({
-        query: createMetroCard,
-        variables: { input: inputData },
-      });
+  try {
+    await client.graphql({
+    query: createMetroCard,
+    variables: { input: inputData },
+  });
       alert("Data saved to DynamoDB!");
       // Reset form state after submission
       setFormData({
