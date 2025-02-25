@@ -1,20 +1,16 @@
-import React, { useState } from 'react';
-import { Amplify } from 'aws-amplify';
-import awsconfig from './aws-exports';
+import React, { useState } from "react";
+import { Amplify, API } from "aws-amplify";
+import awsconfig from "./aws-exports";
+import { createMetroCard } from "./graphql/mutations";
+import { Card, CardHeader, CardTitle, CardContent } from "./components/ui/card";
 
-// Configure Amplify with your AWS settings
+// Configure Amplify
 Amplify.configure(awsconfig);
 
-import { Card, CardHeader, CardTitle, CardContent } from "./components/ui/card";
-import { generateClient } from "aws-amplify/api";
-const client = generateClient();
-import { createMetroCard } from "./graphql/mutations";
-
 const MetroCardTracker = () => {
-  // State to track the transaction type (issue or return)
-  const [transactionType, setTransactionType] = useState('issue');
+  const [transactionType, setTransactionType] = useState("issue");
 
-  // Form state for the input fields
+  // Form state
   const [formData, setFormData] = useState({
     unit: "",
     fullName: "",
@@ -25,7 +21,7 @@ const MetroCardTracker = () => {
     signature: "",
   });
 
-  // Handle changes to each input
+  // Handle input changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -34,27 +30,29 @@ const MetroCardTracker = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Prepare the data to send.
-    // Include the transactionType, and only send the appropriate date field.
+    // Prepare data for GraphQL mutation
     const inputData = {
       ...formData,
       transactionType,
     };
 
-    if (transactionType === 'issue') {
+    // Remove the irrelevant date field
+    if (transactionType === "issue") {
       delete inputData.dateReturned;
     } else {
       delete inputData.dateIssued;
     }
 
     try {
-      const response = await client.graphql({
+      const response = await API.graphql({
         query: createMetroCard,
         variables: { input: inputData },
       });
+
       console.log("GraphQL response:", response);
-      alert("Data saved to DynamoDB!");
-      // Reset form state after submission
+      alert("MetroCard data saved successfully!");
+
+      // Reset form after submission
       setFormData({
         unit: "",
         fullName: "",
@@ -66,6 +64,7 @@ const MetroCardTracker = () => {
       });
     } catch (error) {
       console.error("Error saving to DynamoDB", error);
+      alert("Error saving data. Please try again.");
     }
   };
 
@@ -87,22 +86,22 @@ const MetroCardTracker = () => {
               <button
                 type="button"
                 className={`px-4 py-2 rounded-lg ${
-                  transactionType === 'issue'
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-gray-200'
+                  transactionType === "issue"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200"
                 }`}
-                onClick={() => setTransactionType('issue')}
+                onClick={() => setTransactionType("issue")}
               >
                 Card Issuance
               </button>
               <button
                 type="button"
                 className={`px-4 py-2 rounded-lg ${
-                  transactionType === 'return'
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-gray-200'
+                  transactionType === "return"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200"
                 }`}
-                onClick={() => setTransactionType('return')}
+                onClick={() => setTransactionType("return")}
               >
                 Card Return
               </button>
@@ -169,16 +168,14 @@ const MetroCardTracker = () => {
 
             <div>
               <label className="block text-sm font-medium mb-1">
-                {transactionType === 'issue'
-                  ? 'Date Issued'
-                  : 'Date Returned'}
+                {transactionType === "issue" ? "Date Issued" : "Date Returned"}
               </label>
               <input
                 type="date"
-                name={transactionType === 'issue' ? "dateIssued" : "dateReturned"}
+                name={transactionType === "issue" ? "dateIssued" : "dateReturned"}
                 className="w-full p-2 border rounded-lg"
                 value={
-                  transactionType === 'issue'
+                  transactionType === "issue"
                     ? formData.dateIssued
                     : formData.dateReturned
                 }
@@ -206,7 +203,7 @@ const MetroCardTracker = () => {
               type="submit"
               className="w-full bg-blue-500 text-white py-2 rounded-lg mt-6"
             >
-              {transactionType === 'issue' ? 'Issue Card' : 'Return Card'}
+              {transactionType === "issue" ? "Issue Card" : "Return Card"}
             </button>
           </form>
         </CardContent>
