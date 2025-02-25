@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Amplify from "aws-amplify"; // Removed API from the named import
+import * as Amplify from "aws-amplify"; // Changed import to namespace import
 import awsconfig from "./aws-exports";
 import { createMetroCard } from "./graphql/mutations";
 import { Card, CardHeader, CardTitle, CardContent } from "./components/ui/card";
