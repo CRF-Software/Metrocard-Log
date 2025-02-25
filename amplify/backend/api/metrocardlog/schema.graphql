@@ -12,4 +12,5 @@ type MetroCard @model {
   dateIssued: AWSDate
   dateReturned: AWSDate
   signature: String
+  transactionType: String!
 }
