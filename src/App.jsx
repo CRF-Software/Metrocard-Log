@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Amplify, API } from "aws-amplify";
+import Amplify from "aws-amplify"; // Removed API from the named import
 import awsconfig from "./aws-exports";
 import { createMetroCard } from "./graphql/mutations";
 import { Card, CardHeader, CardTitle, CardContent } from "./components/ui/card";
@@ -44,7 +44,8 @@ const MetroCardTracker = () => {
     }
 
     try {
-      const response = await API.graphql({
+      // Use Amplify.API to make the GraphQL call
+      const response = await Amplify.API.graphql({
         query: createMetroCard,
         variables: { input: inputData },
       });
